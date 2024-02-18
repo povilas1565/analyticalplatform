@@ -1,0 +1,95 @@
+    {% extends 'base.html' %}
+    {% load static %}
+        {% block content %}
+                    <div class="header">
+                        <div class="container">
+                            <div class="title">{{coin.title}}</div>
+                        </div>
+                    </div>
+                    <div class="main">
+                        <div class="container">
+                            <div class="block filters">
+                              <form action="" method="get">
+                                <div class="filter"><label>From:</label><input type="date" name="from-date" value="{{from_date}}"></div>
+                                <div class="filter"><label>To:</label><input type="date" name="to-date" value="{{to_date}}"></div>
+                                <div class="filter">
+                                  <button type="submit">Search</button>
+                                </div>
+                              </form>
+                            </div>
+                            <div class="block">
+                                <div id="myGrid" style="height: 500px;" class="ag-theme-material"></div>
+                            </div>
+                            <div class="block">
+                                <div id="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+        {% endblock content %}
+        {% block footer_js %}
+        <script>
+            const currentUrl = window.location.href;
+            const urlParams = new URLSearchParams(new URL(currentUrl).search);
+            var newUrl = '/api/v1/transaction/json/{{coin.id}}/?search=true';
+            urlParams.forEach((value, key) => {
+                newUrl += `&${key}=${value}`;
+            });
+            var rrr = {}
+            const columnDefs = [
+              { headerName: "Hash", field: "id_external", filter: 'agNumberColumnFilter' },
+              { headerName: "From", field: "from_wallet_id", filter: 'agNumberColumnFilter' },
+              { headerName: "To", field: "to_wallet_id", filter: 'agNumberColumnFilter' },
+              { headerName: "Amount", field: "price", filter: 'agNumberColumnFilter' }
+            ];
+              var data2 = [];
+              // let the grid know which columns and what data to use
+              const gridOptions = {
+                columnDefs: columnDefs,
+                enableColResize: true,
+                pagination: true,
+                onGridReady: (event) =>{renderDataInTheTable(event.api)}
+              };
+              function renderDataInTheTable(api) {
+                  fetch(newUrl)
+                      .then(function (response) {
+                          return response.json();
+                      }).then(function (data) {
+                          api.setRowData(data["qs"]);
+                          data2 = data["qs"];
+                          var resultArray = [];
+                          data2.forEach(dictionary => {
+                            // Извлекаем значения по выбранным ключам
+                            const extractedValues = {};
+                            console.log(dictionary["address"] + "- qs");
+                            console.log(dictionary["pnl_release"] + "- qs");
+                            extractedValues["x"] = dictionary["id_external"];
+                            extractedValues["y"] = dictionary["price"];
+                            resultArray.push(extractedValues);
+                          });
+                          var options = {
+                            series: [
+                            {
+                              data: resultArray
+                            }
+                          ],
+                            legend: {
+                            show: false
+                          },
+                          chart: {
+                            height: 350,
+                            type: 'treemap'
+                          }
+                          };
+    
+                          var chart = new ApexCharts(document.querySelector("#chart"), options);
+                          chart.render();
+                      })
+              };
+              const gridDiv = document.querySelector('#myGrid');
+              new agGrid.Grid(gridDiv, gridOptions);
+        </script>
+        <script>
+            
+            
+        </script>
+        {% endblock footer_js %}

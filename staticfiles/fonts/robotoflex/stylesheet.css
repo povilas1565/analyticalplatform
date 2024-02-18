@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Roboto Flex';
+    src: url('RobotoFlex-Regular.eot');
+    src: local('Roboto Flex Regular'), local('RobotoFlex-Regular'),
+        url('RobotoFlex-Regular.eot?#iefix') format('embedded-opentype'),
+        url('RobotoFlex-Regular.woff2') format('woff2'),
+        url('RobotoFlex-Regular.woff') format('woff'),
+        url('RobotoFlex-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

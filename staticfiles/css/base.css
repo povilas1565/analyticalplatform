@@ -1,0 +1,142 @@
+*{
+    padding:0;
+    margin:0;
+    font-family: "Roboto Flex", sans-serif;
+    list-style: none;
+}
+
+main{
+    background: #F5F5FA;
+    display: flex;
+}
+
+.logo{
+    font-size: 1.4em;
+    font-weight: 800;
+    color: #585858;
+}
+
+.sidebar > nav > ul > li.title {
+    padding: 15px 10px;
+    font-size: .9em;
+}
+
+.sidebar > nav {
+    padding: 0px 15px;
+}
+
+#profile{
+    cursor: help;
+    pointer-events: none;
+}
+
+.sidebar > nav > ul > li > a {
+    display: flex;
+    padding: 15px 20px;
+    text-decoration: none;
+    gap: 7px;
+    align-items: center;
+    font-weight: 800;
+    color: black;
+    font-size: .9em;    
+}
+
+.sidebar > .logo {
+    padding: 25px;
+}
+
+.sidebar {
+    border-right: 1px solid #E1E7E7;
+    width: 300px;
+    min-height: 100vh;
+    min-width: 300px;
+}
+
+main > .content {
+    width: 100%;
+}
+
+.container{
+    width: 1400px;
+    margin: 0 auto;
+}
+
+main > .content > .header {
+    border-bottom: 1px solid #E1E7E7;
+    margin-bottom: 45px;
+}
+
+main > .content > .header > .container > .title {
+    padding: 25px;
+    padding-left: 0;
+}
+
+main > .content > .main {
+    margin-bottom: 45px;
+}
+
+.block{
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+}
+
+.block.filters>form>.filter>input {
+    border: 0;
+    background: #F5F5FA;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 150px;
+}
+
+.block.filters>form>.filter>label {
+    font-size: .9em;
+    color: #585858;
+    margin-bottom: 5px;
+}
+
+.block.filters>form {
+    display: flex;
+    gap: 10px;
+}
+
+.block.filters>form>.filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.button{
+    background: #0052FF;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: .9em;
+    display: flex;
+}
+
+form > .filter > button {
+    background: #0052FF;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: .9em;
+    border: 0;
+    display: flex;
+    
+}
+
+form > .filter > .row {
+    display: flex;
+    gap: 6px;
+}
+
+
+
+@media (max-width: 1500px) {
+    .container{
+        width: 1000px;
+    }
+}

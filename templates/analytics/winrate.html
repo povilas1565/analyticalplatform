@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+                <div class="header">
+                    <div class="container">
+                        <div class="title">Winrate</div>
+                    </div>
+                </div>
+                <div class="main">
+                    <div class="container">
+                        <div class="block filters">
+                          <form action="" method="get">
+                            <div class="filter">
+                              <label for="winrate"> Winrate prefilters:</label>
+                              <div class="row">
+                                <a class="button" onclick="changeInputValueByName('20-60')">20-60%</a>
+                                <a class="button" onclick="changeInputValueByName('60-80')">60-80%</a>
+                                <a class="button" onclick="changeInputValueByName('80-100')">80+%</a>
+                              </div>
+                            </div>
+                            <div class="filter">
+                              <label>Winrate:</label>
+                              <input type="text" id="winrate" name="winrate" value="20-60">
+                            </div>
+                            <div class="filter"><label>From:</label><input type="date" name="from-date" value="{{from_date}}"></div>
+                            <div class="filter"><label>To:</label><input type="date" name="to-date" value="{{to_date}}"></div>
+                            <div class="filter">
+                              <button type="submit">Search</button>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="block">
+                            <div id="myGrid" style="height: 500px;" class="ag-theme-material"></div>
+                        </div>
+                        <div class="block">
+                            <div id="chart"></div>
+                        </div>
+                    </div>
+                </div>
+    {% endblock content %}
+    {% block footer_js %}
+    <script>
+      function changeInputValueByName(newValue) {
+        var inputElement = document.querySelector(`input[name="winrate"]`);
+        inputElement.value = newValue;
+      }
+        const currentUrl = window.location.href;
+        const urlParams = new URLSearchParams(new URL(currentUrl).search);
+        var newUrl = '/api/v1/winrate/json/?search=true';
+        urlParams.forEach((value, key) => {
+            newUrl += `&${key}=${value}`;
+        });
+        var rrr = {}
+        const columnDefs = [
+          { field: "address", filter: 'agTextColumnFilter' },
+          { field: "total_buy_price", filter: 'agNumberColumnFilter' },
+          { field: "total_sell_price", filter: 'agNumberColumnFilter' },
+          { field: "commission", filter: 'agNumberColumnFilter' },
+          { field: "total_count_buy", filter: 'agNumberColumnFilter' },
+          { field: "total_count_sell", filter: 'agNumberColumnFilter' },
+          { field: "pnl_release", filter: 'agNumberColumnFilter' },
+          { field: "pnl_unrelease", filter: 'agNumberColumnFilter' },
+          { field: "winrate", filter: 'agNumberColumnFilter' },
+          { field: "pnl_percent", filter: 'agNumberColumnFilter' }
+        ];
+          var data2 = [];
+          // let the grid know which columns and what data to use
+          const gridOptions = {
+            columnDefs: columnDefs,
+            enableColResize: true,
+            pagination: true,
+            onGridReady: (event) =>{renderDataInTheTable(event.api)}
+          };
+          function renderDataInTheTable(api) {
+              fetch(newUrl)
+                  .then(function (response) {
+                      return response.json();
+                  }).then(function (data) {
+                      api.setRowData(data["qs"]);
+                      data2 = data["qs"];
+                      var resultArray = [];
+                      data2.forEach(dictionary => {
+                        // Извлекаем значения по выбранным ключам
+                        const extractedValues = {};
+                        console.log(dictionary["address"] + "- qs");
+                        console.log(dictionary["pnl_release"] + "- qs");
+                        extractedValues["x"] = dictionary["address"];
+                        extractedValues["y"] = dictionary["winrate"];
+                        resultArray.push(extractedValues);
+                      });
+                      var options = {
+                        series: [
+                        {
+                          data: resultArray
+                        }
+                      ],
+                        legend: {
+                        show: false
+                      },
+                      chart: {
+                        height: 350,
+                        type: 'treemap'
+                      }
+                      };
+
+                      var chart = new ApexCharts(document.querySelector("#chart"), options);
+                      chart.render();
+                  })
+          };
+          const gridDiv = document.querySelector('#myGrid');
+          new agGrid.Grid(gridDiv, gridOptions);
+    </script>
+    <script>
+        
+        
+    </script>
+    {% endblock footer_js %}

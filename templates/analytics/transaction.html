@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+                <div class="header">
+                    <div class="container">
+                        <div class="title">Transaction</div>
+                    </div>
+                </div>
+                <div class="main">
+                    <div class="container coins">
+                        {% for coin in coins.all %}
+                        <a href="/transaction/{{coin.id}}/">
+                            <div class="block coin">
+                                <div class="title">{{coin.title}}</div>
+                                <div class="title">{{coin.price}}</div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+    {% endblock content %}
+    {% block footer_js %}
+    <script>
+        const columnDefs = [
+          { field: "address", filter: 'agNumberColumnFilter' },
+          { field: "amount", filter: 'agNumberColumnFilter' }
+        ];
+
+        // specify the data
+        const rowData = [
+        {% for transaction in transactions.all %}
+            { address: "{{transaction.address}}", amount: "{{transaction.amount}}"},
+        {% endfor %}
+        ];
+
+        // let the grid know which columns and what data to use
+        const gridOptions = {
+          columnDefs: columnDefs,
+          rowData: rowData,
+          enableColResize: true
+        };
+
+        // setup the grid after the page has finished loading
+        document.addEventListener('DOMContentLoaded', () => {
+          const gridDiv = document.querySelector('#myGrid');
+          new agGrid.Grid(gridDiv, gridOptions);
+        });
+    </script>
+    <script>
+        var options = {
+          series: [
+          {
+            data: [
+            {% for transaction in transactions.all %}
+                {
+                    x: '{{transaction.id_external}}',
+                    y: {{transaction.amount}}
+                },
+            {% endfor %}
+
+            ]
+          }
+        ],
+          legend: {
+          show: false
+        },
+        chart: {
+          height: 350,
+          type: 'treemap'
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+    {% endblock footer_js %}

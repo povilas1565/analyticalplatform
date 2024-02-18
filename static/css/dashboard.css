@@ -1,0 +1,36 @@
+main > .content > .main > .container{
+    display: flex;
+    flex-direction: column;
+    gap: 25px
+}
+
+main > .content > .main > .container.coins {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+main > .content > .main > .container.coins > a {
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: black
+}
+
+main > .content > .main > .container.coins > a > .coin {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    font-weight: 600;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+main > .content > .main > .container.coins > a > .coin > img {
+    height: 100px
+}
+
+main > .content > .main > .container.coins > a > .coin > .title {
+    width: 100%;
+    font-size: .7em;
+}

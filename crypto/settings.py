@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-i+d1!#&u08c8@ct)*c@s*6&1+%ur+u*ms6iz@3%)d9juxsu8em
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["whalesarchery"]
 
 # Application definition
 
@@ -125,6 +125,10 @@ STATICFILES_DIRS = [
     (os.path.join(BASE_DIR, 'static'))
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://whalesarchery'
+]
 
 BOT_TOKEN = "6850829919:AAFQz19FHoyx_ce0TIAsx_LJihKaNp7UkFI"
 
